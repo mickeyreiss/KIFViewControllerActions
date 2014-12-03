@@ -40,6 +40,18 @@
 @property (nonatomic, strong) Class defaultToolbarClass;
 
 /**
+ Presents the given `UIViewController` subclass within a `UINavigationController` instance with the specified `UINavigationBar` and `UIToolbar` subclasses, optionally yielding the instantiated controller to the block for configuration.
+
+ @param viewController The initialized `UIViewController` subclass to present. Cannot be `nil`.
+ @param navigationBarClass A subclass of `UINavigationBar` to use when instantiating the `UINavigationController` instance within which the view controller instance will be presented. If `nil`, then the class specified via `setDefaultNavigationBarClass:` will be used.
+ @param toolbarClass A subclass of `UIToolbar` to use when instantiating the `UINavigationController` instance within which the view controller instance will be presented. If `nil`, then the class specified via `setDefaultToolbarClass:` will be used.
+ @param configurationBlock An optional block in which to yield the newly instantiated view controller instance prior to presenting it in the main window.
+*/
+- (void)presentViewController:(UIViewController *)viewController withinNavigationControllerWithNavigationBarClass:(Class)navigationBarClass
+                 toolbarClass:(Class)toolbarClass
+           configurationBlock:(void (^)(id viewController))configurationBlock;
+
+/**
  Instantiates and presents an instance of the specified `UIViewController` subclass within a `UINavigationController` instance with the specified `UINavigationBar` and `UIToolbar` subclasses, optionally yielding the instantiated controller to the block for configuration.
 
  @param viewControllerClass The `UIViewController` subclass to instantiate. Cannot be `nil`.

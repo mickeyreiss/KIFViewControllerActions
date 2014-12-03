@@ -48,6 +48,24 @@ static Class defaultToolbarClass;
     defaultToolbarClass = newDefaultToolbarClass;
 }
 
+- (void)presentViewController:(UIViewController *)viewController withinNavigationControllerWithNavigationBarClass:(Class)navigationBarClass toolbarClass:(Class)toolbarClass
+                    configurationBlock:(void (^)(id viewController))configurationBlock;
+{
+    [self runBlock:^KIFTestStepResult(NSError **error) {
+        UIViewController *viewControllerToPresent = viewController;
+        KIFTestCondition(viewControllerToPresent != nil, error, @"Expected a view controller, but got nil");
+
+        Class navigationBarClassToUse = navigationBarClass ?: self.defaultNavigationBarClass;
+        Class toolbarClassToUse = toolbarClass ?: self.defaultToolbarClass;
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithNavigationBarClass:navigationBarClassToUse toolbarClass:toolbarClassToUse];
+        navigationController.viewControllers = @[viewControllerToPresent];
+        if (configurationBlock) configurationBlock(viewControllerToPresent);
+        [UIApplication sharedApplication].keyWindow.rootViewController = navigationController;
+
+        return KIFTestStepResultSuccess;
+    }];
+}
+
 - (void)presentViewControllerWithClass:(Class)viewControllerClass withinNavigationControllerWithNavigationBarClass:(Class)navigationBarClass toolbarClass:(Class)toolbarClass
                     configurationBlock:(void (^)(id viewController))configurationBlock;
 {
