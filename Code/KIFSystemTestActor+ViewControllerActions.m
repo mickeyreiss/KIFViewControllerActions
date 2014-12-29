@@ -57,8 +57,13 @@ static Class defaultToolbarClass;
 
         Class navigationBarClassToUse = navigationBarClass ?: self.defaultNavigationBarClass;
         Class toolbarClassToUse = toolbarClass ?: self.defaultToolbarClass;
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithNavigationBarClass:navigationBarClassToUse toolbarClass:toolbarClassToUse];
-        navigationController.viewControllers = @[viewControllerToPresent];
+        UINavigationController *navigationController;
+        if ([viewControllerToPresent isKindOfClass:[UINavigationController class]]) {
+          navigationController = (UINavigationController *)viewControllerToPresent;
+        } else {
+          navigationController = [[UINavigationController alloc] initWithNavigationBarClass:navigationBarClassToUse toolbarClass:toolbarClassToUse];
+          navigationController.viewControllers = @[viewControllerToPresent];
+        }
         if (configurationBlock) configurationBlock(viewControllerToPresent);
         [UIApplication sharedApplication].keyWindow.rootViewController = navigationController;
 
